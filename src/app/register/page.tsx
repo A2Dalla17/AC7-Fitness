@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import AuthCard from '@/components/AuthCard';
 
 export default function RegisterPage() {
-  const { signUpWithEmail, signInWithGoogle } = useAuth();
+  const { signUpWithEmail } = useAuth();
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,16 +26,6 @@ export default function RegisterPage() {
       setError(err.message ?? 'Could not create account');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogle = async () => {
-    setError('');
-    try {
-      await signInWithGoogle();
-      router.push('/onboarding/role');
-    } catch (err: any) {
-      setError(err.message ?? 'Google sign-in failed');
     }
   };
 
@@ -75,12 +65,6 @@ export default function RegisterPage() {
           {loading ? 'Creating account...' : 'Sign Up'}
         </button>
       </form>
-      <button
-        onClick={handleGoogle}
-        className="mt-3 w-full rounded-full border border-white/15 px-6 py-3.5 text-sm font-semibold text-ink"
-      >
-        Continue with Google
-      </button>
       <p className="mt-6 text-center text-sm text-muted">
         Already have an account?{' '}
         <Link href="/login" className="font-semibold text-navy">

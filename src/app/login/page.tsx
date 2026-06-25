@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import AuthCard from '@/components/AuthCard';
 
 export default function LoginPage() {
-  const { signInWithEmail, signInWithGoogle } = useAuth();
+  const { signInWithEmail } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,16 +25,6 @@ export default function LoginPage() {
       setError(err.message ?? 'Could not log in');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogle = async () => {
-    setError('');
-    try {
-      await signInWithGoogle();
-      router.push('/home');
-    } catch (err: any) {
-      setError(err.message ?? 'Google sign-in failed');
     }
   };
 
@@ -66,12 +56,6 @@ export default function LoginPage() {
           {loading ? 'Logging in...' : 'Log In'}
         </button>
       </form>
-      <button
-        onClick={handleGoogle}
-        className="mt-3 w-full rounded-full border border-white/15 px-6 py-3.5 text-sm font-semibold text-ink"
-      >
-        Continue with Google
-      </button>
       <p className="mt-6 text-center text-sm text-muted">
         New to AC7?{' '}
         <Link href="/register" className="font-semibold text-navy">
