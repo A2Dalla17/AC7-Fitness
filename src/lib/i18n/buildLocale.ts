@@ -151,6 +151,11 @@ export function buildLocale(s: LocaleStrings): AppCopy {
       productPrice: s.shProductPrice,
       productDesc: s.shProductDesc,
       productCategory: s.shProductCategory,
+      productImage: s.shProductImage,
+      productImageHint: s.shProductImageHint,
+      productImageUpload: s.shProductImageUpload,
+      productImageChange: s.shProductImageChange,
+      uploadingImage: s.shUploadingImage,
       publish: s.shPublish,
       publishing: s.shPublishing,
       published: s.shPublished,
@@ -351,6 +356,11 @@ export type LocaleStrings = {
   shProductPrice: string;
   shProductDesc: string;
   shProductCategory: string;
+  shProductImage: string;
+  shProductImageHint: string;
+  shProductImageUpload: string;
+  shProductImageChange: string;
+  shUploadingImage: string;
   shPublish: string;
   shPublishing: string;
   shPublished: string;

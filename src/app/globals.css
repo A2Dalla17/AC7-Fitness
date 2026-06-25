@@ -8,12 +8,12 @@
 
 :root,
 html[data-theme='dark'] {
-  /* Dark — bold black luxury */
-  --color-bg: #000000;
-  --color-bg-secondary: #111111;
-  --color-surface: #111111;
-  --color-surface-elevated: #1a1a1a;
-  --color-surface-secondary: #111111;
+  /* Dark — neo-tactile charcoal + depth (revert: #000000 flat) */
+  --color-bg: #0b0b0e;
+  --color-bg-secondary: #121218;
+  --color-surface: #14141a;
+  --color-surface-elevated: #1c1c24;
+  --color-surface-secondary: #121218;
 
   --color-ink: #f0f0f0;
   --color-ink-secondary: #d1d5db;
@@ -29,9 +29,9 @@ html[data-theme='dark'] {
   --elite-text-on-primary: #ffffff;
 
   --elite-overlay: rgba(0, 0, 0, 0.85);
-  --elite-card-bg: #111111;
-  --elite-card-border: rgba(255, 255, 255, 0.08);
-  --elite-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --elite-card-bg: #14141a;
+  --elite-card-border: rgba(255, 255, 255, 0.09);
+  --elite-card-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
 
   --elite-radius-sm: 12px;
   --elite-radius-md: 16px;
@@ -39,7 +39,12 @@ html[data-theme='dark'] {
   --elite-radius-btn: 12px;
   --elite-radius-card: 20px;
 
-  --font-display: var(--font-outfit), var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-sora), sans-serif;
+  --font-primary: var(--font-poppins), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-stat: var(--font-space-grotesk), sans-serif;
+  /* Legacy alias — headings */
+  --font-display: var(--font-heading);
 }
 
 html[data-theme='light'] {
@@ -67,7 +72,95 @@ html,
 body {
   background-color: var(--color-bg);
   color: var(--color-ink);
-  font-family: 'Inter', var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══ Typography — Sora · Poppins · Inter · Space Grotesk ═══ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading,
+.font-display {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: var(--color-ink);
+}
+
+h1,
+.fit-page-title {
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+h2 {
+  font-size: clamp(1.375rem, 3.5vw, 1.875rem);
+  letter-spacing: -0.035em;
+}
+
+h3 {
+  font-size: 1.125rem;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+p,
+li,
+label,
+input,
+textarea,
+select,
+.font-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+.font-primary,
+.fit-btn,
+.ac7-btn,
+.ac7-page-eyebrow,
+.fit-section-title,
+.fit-top-nav__brand span {
+  font-family: var(--font-primary);
+}
+
+.fit-btn,
+.ac7-btn {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.font-stat,
+.stat-card__value,
+.momentum-card__value,
+.community-widget__value,
+.shop-product-card__price,
+.calendar-widget__value,
+.hof-podium__score,
+.ac7-stat-card__value,
+.fit-widget__value,
+.journey-progress-ring__pct,
+.elite-celebration__xp,
+.rep-tick-tracker__count,
+.fit-rank-spotlight__count,
+.fit-product-card__price,
+.home-achievements__count {
+  font-family: var(--font-stat);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
 html[data-theme='dark'] {
@@ -102,6 +195,57 @@ html[data-theme='light'] {
   z-index: 1;
   min-height: 100dvh;
   background-color: var(--color-bg);
+  isolation: isolate;
+}
+
+/* Neo-tactile atmosphere — charcoal base + soft spotlights (AC7 orange accent) */
+html[data-theme='dark'] #app-content {
+  background:
+    linear-gradient(168deg, #18181f 0%, #0b0b0e 38%, #060608 100%);
+}
+
+html[data-theme='dark'] #app-content::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 95% 75% at -8% -12%, rgba(255, 255, 255, 0.1), transparent 48%),
+    radial-gradient(ellipse 70% 58% at 108% 108%, rgba(249, 115, 22, 0.16), transparent 54%),
+    radial-gradient(ellipse 42% 38% at 82% 6%, rgba(251, 146, 60, 0.08), transparent 50%);
+  animation: ac7-neo-breathe 20s ease-in-out infinite alternate;
+}
+
+html[data-theme='dark'] #app-content::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 28%,
+    transparent 72%,
+    rgba(0, 0, 0, 0.42) 100%
+  );
+}
+
+html[data-theme='light'] #app-content {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(249, 115, 22, 0.04), transparent 55%),
+    var(--color-bg);
+}
+
+html[data-theme='light'] #app-content::before,
+html[data-theme='light'] #app-content::after {
+  display: none;
+}
+
+#app-content > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ═══ Layout — premium dashboard shell ═══ */
@@ -471,8 +615,10 @@ html[data-theme='light'] {
   min-height: 44px;
   border-radius: var(--elite-radius-btn);
   padding: 16px 24px;
+  font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1;
   background: var(--elite-primary);
   color: var(--elite-text-on-primary, #f8fafc);
@@ -1573,22 +1719,26 @@ html[data-theme='light'] .fit-bottom-nav {
 }
 
 .fit-page-title {
-  font-size: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
 }
 
 .fit-page-greeting {
+  font-family: var(--font-body);
   font-size: 0.9375rem;
+  font-weight: 400;
   color: var(--color-muted);
   margin-bottom: 0.25rem;
 }
 
 .fit-section-title {
+  font-family: var(--font-primary);
   font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
   margin-bottom: 0.75rem;
@@ -1980,8 +2130,10 @@ html[data-theme='light'] .fit-bottom-nav {
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border-radius: var(--elite-radius-btn);
+  font-family: var(--font-primary);
   font-size: 0.9375rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   transition: opacity 0.15s, transform 0.15s;
 }
 

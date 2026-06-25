@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import { Inter, Poppins, Sora, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import './ac7-elite.css';
 import './ac7-premium.css';
@@ -8,15 +8,29 @@ import AppProviders from '@/components/AppProviders';
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500'],
   variable: '--font-inter',
   display: 'swap',
 });
 
-const outfit = Outfit({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-outfit',
+  weight: ['600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+});
+
+const sora = Sora({
+  subsets: ['latin'],
+  weight: ['800'],
+  variable: '--font-sora',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['700'],
+  variable: '--font-space-grotesk',
   display: 'swap',
 });
 
@@ -28,8 +42,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
-      <body className="bg-bg font-sans text-ink antialiased">
+    <html
+      lang="en"
+      className={`${inter.variable} ${poppins.variable} ${sora.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="bg-bg font-body text-ink antialiased">
         <div id="app-content">
           <AppProviders>{children}</AppProviders>
         </div>

@@ -140,6 +140,11 @@ export type AppCopy = {
     productPrice: string;
     productDesc: string;
     productCategory: string;
+    productImage: string;
+    productImageHint: string;
+    productImageUpload: string;
+    productImageChange: string;
+    uploadingImage: string;
     publish: string;
     publishing: string;
     published: string;

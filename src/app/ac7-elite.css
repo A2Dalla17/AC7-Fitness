@@ -4,32 +4,37 @@
    Clean surfaces · Orange accent · Content-first
    ═══════════════════════════════════════════════════════════ */
 
-/* ─── Typography ─── */
+/* ─── Typography — Sora headings · Poppins UI · Inter body · Space Grotesk stats ─── */
 .fit-page-title,
 .ac7-home-hero__greeting,
 .ac7-home-hero__mission-title,
 .fit-profile-name {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  font-family: var(--font-heading);
+  letter-spacing: -0.045em;
 }
 
 .fit-page-title {
-  font-size: 1.625rem;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
   font-weight: 800;
   color: var(--color-ink);
+  line-height: 1.02;
 }
 
 .fit-page-subline {
-  font-size: 0.8125rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
   color: var(--color-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
 }
 
 .ac7-page-eyebrow {
-  font-family: var(--font-display);
+  font-family: var(--font-primary);
   font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--elite-primary);
   margin-bottom: 0.375rem;
@@ -67,8 +72,9 @@
 }
 
 .fit-top-nav__brand span {
-  font-family: var(--font-display);
-  letter-spacing: 0.1em;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   color: var(--color-ink);
   background: none;
   -webkit-text-fill-color: unset;
@@ -228,8 +234,9 @@
   background: var(--elite-primary);
   color: var(--elite-text-on-primary, #f8fafc);
   box-shadow: none;
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .fit-btn--primary:hover {
@@ -855,11 +862,13 @@ html[data-theme='light'] .ac7-home-hero .rank-badge {
 }
 
 .journey-progress-ring__pct {
-  font-family: var(--font-display);
+  font-family: var(--font-stat);
   font-size: 1.75rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-ink);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
 }
 
 .journey-progress-ring--compact .journey-progress-ring__pct {
@@ -888,7 +897,7 @@ html[data-theme='light'] .ac7-home-hero .rank-badge {
 }
 
 .journey-progress-ring__rank {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 800;
   color: var(--color-ink);

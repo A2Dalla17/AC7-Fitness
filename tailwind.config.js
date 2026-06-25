@@ -4,7 +4,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
+        body: ['var(--font-inter)', 'sans-serif'],
+        primary: ['var(--font-poppins)', 'sans-serif'],
+        heading: ['var(--font-sora)', 'sans-serif'],
+        display: ['var(--font-sora)', 'sans-serif'],
+        stat: ['var(--font-space-grotesk)', 'sans-serif'],
       },
       colors: {
         bg: 'var(--color-bg)',

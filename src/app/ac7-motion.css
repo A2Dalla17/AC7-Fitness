@@ -40,6 +40,17 @@ html[data-theme='dark'] .ac7-logo--muted {
   overflow: hidden;
 }
 
+@keyframes ac7-neo-breathe {
+  from {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
 .ac7-universe__particle {
   position: absolute;
   opacity: 0.07;
@@ -133,7 +144,7 @@ html[data-theme='light'] .ac7-universe__particle--twinkle {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: transparent;
 }
 
 .ac7-auth-shell > *:not(.ac7-universe) {
@@ -148,26 +159,14 @@ html[data-theme='light'] .ac7-universe__particle--twinkle {
   pointer-events: none;
 }
 
-/* ─── App shell ─── */
+/* ─── App shell — neo atmosphere shows through transparent shell ─── */
 .fit-app {
   position: relative;
   isolation: isolate;
+  background: transparent;
 }
 
-.fit-app::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.02), transparent 60%);
-}
-
-html[data-theme='light'] .fit-app::before {
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 0, 0, 0.015), transparent 60%);
-}
-
+.fit-app::before,
 .fit-app::after {
   display: none;
 }
@@ -254,9 +253,11 @@ a.premium-card:hover,
 }
 
 .elite-celebration__xp {
-  font-family: var(--font-display);
-  font-weight: 800;
+  font-family: var(--font-stat);
+  font-weight: 700;
   color: var(--elite-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
   animation: elite-xp-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
@@ -438,6 +439,7 @@ a.premium-card:hover,
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html[data-theme='dark'] #app-content::before,
   .ac7-universe__particle,
   .fit-app::before,
   .fit-app::after,
