@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import type { SeasonRank } from '@/lib/seasons';
+import RankBadge from '@/components/home/RankBadge';
 
 interface HomeHeroProps {
   firstName: string;
   seasonCode: string;
-  rankLabel: string;
+  rankKey: SeasonRank;
   missionTitle: string;
   missionMeta: string;
   continueHref: string;
@@ -16,7 +18,7 @@ interface HomeHeroProps {
 export default function HomeHero({
   firstName,
   seasonCode,
-  rankLabel,
+  rankKey,
   missionTitle,
   missionMeta,
   continueHref,
@@ -24,7 +26,7 @@ export default function HomeHero({
   profileInitial,
 }: HomeHeroProps) {
   return (
-    <section className="ac7-home-hero">
+    <section className="ac7-home-hero home-animate home-animate--1">
       <div
         className="ac7-home-hero__media"
         style={{ backgroundImage: "url('/gym-bg.png')" }}
@@ -34,10 +36,10 @@ export default function HomeHero({
 
       <div className="ac7-home-hero__content">
         <div className="ac7-home-hero__head">
-          <div>
-            <h1 className="ac7-home-hero__greeting">Welcome Back, {firstName}</h1>
-            <p className="ac7-home-hero__season">Season {seasonCode}</p>
-            <p className="ac7-home-hero__rank">{rankLabel}</p>
+          <div className="ac7-home-hero__identity">
+            <p className="ac7-home-hero__eyebrow">Season {seasonCode}</p>
+            <h1 className="ac7-home-hero__greeting">Welcome back, {firstName}</h1>
+            <RankBadge rank={rankKey} size="sm" />
           </div>
           <Link href="/profile" className="ac7-home-hero__avatar" title="Profile">
             {profileInitial}
@@ -45,7 +47,7 @@ export default function HomeHero({
         </div>
 
         <div className="ac7-home-hero__mission">
-          <p className="ac7-home-hero__mission-label">Today&apos;s Mission</p>
+          <p className="ac7-home-hero__mission-label">Today&apos;s mission</p>
           <p className="ac7-home-hero__mission-title">{missionTitle}</p>
           <p className="ac7-home-hero__mission-meta">{missionMeta}</p>
           <Link href={continueHref} className="fit-btn fit-btn--primary fit-btn--sm ac7-home-hero__cta">

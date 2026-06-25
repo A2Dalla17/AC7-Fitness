@@ -11,7 +11,7 @@ import StageChecklist from '@/components/training/StageChecklist';
 import MissionRoadmap from '@/components/missions/MissionRoadmap';
 import { JourneySection } from '@/components/journey/JourneyBlocks';
 import { useTrainingProgress } from '@/hooks/useTrainingProgress';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 import WorldPageHeader from '@/components/world/WorldPageHeader';
 import {
   completedStagesInRank,
@@ -20,6 +20,7 @@ import {
 import { RANK_STAGE_COUNTS } from '@/lib/seasons';
 
 function MissionsContent() {
+  const COPY = useCopy();
   const { supabaseUser } = useAuth();
   const { progress, loading, continueTraining } = useTrainingProgress(supabaseUser?.id);
   const { canUpload } = useCanUploadVideos();

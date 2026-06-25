@@ -3,19 +3,21 @@
 import { Crown, Flame, Medal, Scroll, ShieldCheck, Swords, Users } from 'lucide-react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import WorldPageHeader from '@/components/world/WorldPageHeader';
+import HallOfFamePodium from '@/components/hall-of-fame/HallOfFamePodium';
 import {
   HallOfFameEmpty,
   HallOfFameEntry,
   HallOfFamePeriodTabs,
   HallOfFameSection,
 } from '@/components/hall-of-fame/HallOfFameBlocks';
+import Ac7BrandWatermark from '@/components/ac7/Ac7BrandWatermark';
 import { useHallOfFame } from '@/hooks/useHallOfFame';
 import { COPY, LEGACY } from '@/lib/legacyBrand';
 import { formatLegacyScore, LEGACY_WEIGHTS } from '@/lib/legacyScore';
 import { HOF_PERIOD_LABELS } from '@/lib/hallOfFame';
 
 function HallOfFameContent() {
-  const { data, loading, period, setPeriod, usingDemo } = useHallOfFame('seasonal');
+  const { data, loading, period, setPeriod } = useHallOfFame('seasonal');
 
   const periodLabel = data ? HOF_PERIOD_LABELS[data.periodType] : HOF_PERIOD_LABELS.seasonal;
 
@@ -39,14 +41,25 @@ function HallOfFameContent() {
 
       <HallOfFamePeriodTabs period={period} onChange={setPeriod} />
 
-      {usingDemo && (
-        <p className="hof-demo-note">{COPY.hallOfFame.demoNote}</p>
-      )}
-
       {loading ? (
-        <p className="text-muted py-8">{COPY.hallOfFame.loading}</p>
+        <div className="py-8 text-center">
+          <Ac7BrandWatermark />
+          <p className="text-muted">{COPY.hallOfFame.loading}</p>
+        </div>
       ) : !data ? null : (
         <div className="hof-sections">
+          {data.warriors.length >= 3 && (
+            <HallOfFamePodium
+              title="Top Warriors"
+              entries={data.warriors.slice(0, 3).map((w) => ({
+                rank: w.rank,
+                name: w.name,
+                primary: `${w.level} · ${w.xp.toLocaleString()} XP`,
+                score: `${w.seasonProgress}% season`,
+              }))}
+            />
+          )}
+
           <HallOfFameSection
             icon={<Swords size={22} />}
             title={COPY.hallOfFame.warriors.title}
@@ -110,6 +123,18 @@ function HallOfFameContent() {
               ))
             )}
           </HallOfFameSection>
+
+          {data.legacyLeaders.length >= 3 && (
+            <HallOfFamePodium
+              title="Legacy Champions"
+              entries={data.legacyLeaders.slice(0, 3).map((l) => ({
+                rank: l.rank,
+                name: l.name,
+                primary: `${l.level}`,
+                score: `Legacy ${formatLegacyScore(l.legacyScore)}`,
+              }))}
+            />
+          )}
 
           <HallOfFameSection
             icon={<Flame size={22} />}

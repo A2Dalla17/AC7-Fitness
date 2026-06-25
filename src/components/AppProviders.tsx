@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { SupabaseSetupNotice } from '@/components/SupabaseSetupNotice';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 import AppLayout from '@/components/layout/AppLayout';
 import GlobalAnnouncementBanner from '@/components/ac7/GlobalAnnouncementBanner';
 
@@ -11,12 +12,14 @@ import GlobalAnnouncementBanner from '@/components/ac7/GlobalAnnouncementBanner'
 export default function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <GlobalAnnouncementBanner />
-        <AppLayout>
-          <SupabaseSetupNotice>{children}</SupabaseSetupNotice>
-        </AppLayout>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <GlobalAnnouncementBanner />
+          <AppLayout>
+            <SupabaseSetupNotice>{children}</SupabaseSetupNotice>
+          </AppLayout>
+        </AuthProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

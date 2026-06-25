@@ -1,25 +1,34 @@
-/** Large journey progress ring — hero visual for home zone */
+'use client';
+
+import { useAnimatedNumber } from '@/hooks/useAnimatedNumber';
+
+/** Journey progress ring — animated count-up on mount */
 export default function JourneyProgressRing({
   percent,
   seasonCode,
   rankLabel,
   xp,
-  size = 168,
+  size = 152,
+  compact = false,
 }: {
   percent: number;
   seasonCode: string;
   rankLabel: string;
   xp: number;
   size?: number;
+  /** Hide redundant meta when shown beside mission progress */
+  compact?: boolean;
 }) {
-  const stroke = 8;
+  const stroke = 7;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.min(100, Math.max(0, percent));
-  const offset = circumference - (clamped / 100) * circumference;
+  const livePct = useAnimatedNumber(clamped, 1100);
+  const liveXp = useAnimatedNumber(xp, 800);
+  const offset = circumference - (livePct / 100) * circumference;
 
   return (
-    <div className="journey-progress-ring">
+    <div className={`journey-progress-ring ${compact ? 'journey-progress-ring--compact' : ''}`}>
       <div className="journey-progress-ring__visual" style={{ width: size, height: size }}>
         <svg
           className="journey-progress-ring__svg"
@@ -37,7 +46,7 @@ export default function JourneyProgressRing({
             strokeWidth={stroke}
           />
           <circle
-            className="journey-progress-ring__fill"
+            className="journey-progress-ring__fill journey-progress-ring__fill--animated"
             cx={size / 2}
             cy={size / 2}
             r={radius}
@@ -50,15 +59,17 @@ export default function JourneyProgressRing({
           />
         </svg>
         <div className="journey-progress-ring__center">
-          <span className="journey-progress-ring__pct">{clamped}%</span>
+          <span className="journey-progress-ring__pct journey-progress-ring__pct--live">{livePct}%</span>
           <span className="journey-progress-ring__label">Season</span>
         </div>
       </div>
-      <div className="journey-progress-ring__meta">
-        <p className="journey-progress-ring__season">Season {seasonCode}</p>
-        <p className="journey-progress-ring__rank">{rankLabel}</p>
-        <p className="journey-progress-ring__xp">{xp.toLocaleString()} XP</p>
-      </div>
+      {!compact && (
+        <div className="journey-progress-ring__meta">
+          <p className="journey-progress-ring__season">Season {seasonCode}</p>
+          <p className="journey-progress-ring__rank">{rankLabel}</p>
+          <p className="journey-progress-ring__xp">{liveXp.toLocaleString()} XP</p>
+        </div>
+      )}
     </div>
   );
 }

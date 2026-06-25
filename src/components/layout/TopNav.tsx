@@ -7,19 +7,21 @@ import AC7Logo from '@/components/ac7/AC7Logo';
 import ThemeToggle from '@/components/ac7/ThemeToggle';
 import LanguageButton from '@/components/ac7/LanguageButton';
 import { useAuth } from '@/context/AuthContext';
-import { COPY } from '@/lib/legacyBrand';
-import { MAIN_NAV } from '@/components/layout/navConfig';
+import { useCopy } from '@/context/LanguageContext';
+import { getMainNav } from '@/components/layout/navConfig';
 
 export default function TopNav() {
   const pathname = usePathname() ?? '';
   const { appUser } = useAuth();
+  const copy = useCopy();
+  const mainNav = getMainNav(copy);
   const initial = (appUser?.name ?? 'A').charAt(0).toUpperCase();
 
   return (
     <header className="fit-top-nav hidden lg:block">
       <div className="fit-top-nav__inner">
         <nav className="fit-top-nav__links" aria-label="Main">
-          {MAIN_NAV.map(({ href, label }) => {
+          {mainNav.map(({ href, label }) => {
             const active =
               href === '/home' ? pathname === '/home' || pathname === '/dashboard' : pathname.startsWith(href);
             return (
@@ -41,8 +43,13 @@ export default function TopNav() {
           <Link href="/announcements" className="fit-top-nav__icon-btn" aria-label="Notifications">
             <Bell size={18} />
           </Link>
-          <Link href="/profile" className="fit-top-nav__avatar" title={COPY.profile.title}>
-            {initial}
+          <Link href="/profile" className="fit-top-nav__avatar fit-top-nav__avatar--img" title={copy.profile.title}>
+            {appUser?.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={appUser.avatarUrl} alt="" className="h-full w-full rounded-full object-cover" />
+            ) : (
+              initial
+            )}
           </Link>
         </div>
       </div>

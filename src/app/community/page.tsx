@@ -7,8 +7,9 @@ import { Search, Megaphone, Send, Mic, Square, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 import WorldPageHeader from '@/components/world/WorldPageHeader';
+import CommunityWidgets from '@/components/community/CommunityWidgets';
 
 const PUBLIC_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -31,6 +32,7 @@ interface Contact {
 }
 
 function CommunityContent() {
+  const COPY = useCopy();
   const { supabaseUser, appUser } = useAuth();
   const router = useRouter();
   const [tab, setTab] = useState<ChatTab>('public');
@@ -49,6 +51,9 @@ function CommunityContent() {
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const chatReadyRef = useRef(false);
+  const prevMsgCountRef = useRef(0);
+  const [enteringIds, setEnteringIds] = useState<Set<string>>(new Set());
 
   const isAdmin = appUser?.role === 'admin';
 
@@ -82,6 +87,26 @@ function CommunityContent() {
       supabase.removeChannel(channel);
     };
   }, [supabaseUser?.id]);
+
+  useEffect(() => {
+    if (!chatReadyRef.current) {
+      if (messages.length > 0) {
+        chatReadyRef.current = true;
+        prevMsgCountRef.current = messages.length;
+      }
+      return;
+    }
+
+    if (messages.length > prevMsgCountRef.current) {
+      const fresh = messages.slice(prevMsgCountRef.current);
+      setEnteringIds((prev) => {
+        const next = new Set(prev);
+        fresh.forEach((m) => next.add(m.id));
+        return next;
+      });
+    }
+    prevMsgCountRef.current = messages.length;
+  }, [messages]);
 
   useEffect(() => {
     if (tab === 'public') bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -182,7 +207,7 @@ function CommunityContent() {
           </Link>
           {isAdmin && (
             <button type="button" onClick={() => setShowAnnounce((v) => !v)} aria-label="Post announcement" className="fit-top-nav__icon-btn !h-9 !w-9">
-              <Megaphone size={18} className="text-blue-400" />
+              <Megaphone size={18} className="text-orange-400" />
             </button>
           )}
         </div>
@@ -200,6 +225,12 @@ function CommunityContent() {
           </button>
         ))}
       </div>
+
+      {tab === 'public' && (
+        <div className="px-4 pt-3">
+          <CommunityWidgets memberCount={contacts.length + 1} onlineCount={Math.min(24, contacts.length + 3)} />
+        </div>
+      )}
 
       {showSearch && (
         <div className="border-b border-white/10 px-4 py-3">
@@ -282,9 +313,13 @@ function CommunityContent() {
           <div className="fit-chat__messages">
             {messages.map((m) => {
               const mine = m.sender_id === supabaseUser?.id;
+              const enter = enteringIds.has(m.id);
               return (
-                <div key={m.id} className={`fit-chat__bubble ${mine ? 'fit-chat__bubble--mine' : 'fit-chat__bubble--theirs'}`}>
-                  {!mine && <p className="mb-0.5 text-[11px] font-semibold text-blue-400">{names[m.sender_id] ?? 'Member'}</p>}
+                <div
+                  key={m.id}
+                  className={`fit-chat__bubble ${mine ? 'fit-chat__bubble--mine' : 'fit-chat__bubble--theirs'}${enter ? ' fit-chat__bubble--enter' : ''}`}
+                >
+                  {!mine && <p className="mb-0.5 text-[11px] font-semibold text-orange-400">{names[m.sender_id] ?? 'Member'}</p>}
                   {m.kind === 'voice' && m.media_url ? (
                     <audio controls src={m.media_url} className="h-9 w-48 max-w-full" />
                   ) : (
@@ -311,7 +346,7 @@ function CommunityContent() {
               onKeyDown={(e) => e.key === 'Enter' && send()}
               placeholder={COPY.community.placeholder}
             />
-            <button type="button" onClick={send} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white">
+            <button type="button" onClick={send} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white">
               <Send size={18} />
             </button>
           </div>
@@ -322,13 +357,18 @@ function CommunityContent() {
             <p className="p-4 text-sm text-muted">{COPY.community.emptyDm}</p>
           ) : (
             filteredContacts.map((c) => (
-              <button key={c.id} type="button" onClick={() => openDirect(c.id)} className="fit-dm-row w-full text-left">
-                <div className="fit-dm-avatar">{c.name.charAt(0)}</div>
-                <div className="min-w-0 flex-1">
+              <div key={c.id} className="fit-dm-row w-full flex items-center gap-2">
+                <Link href={`/profile/${c.id}`} className="fit-dm-avatar shrink-0">
+                  {c.name.charAt(0)}
+                </Link>
+                <button type="button" onClick={() => openDirect(c.id)} className="min-w-0 flex-1 text-left">
                   <p className="font-semibold">{c.name}</p>
                   <p className="text-xs capitalize text-muted">{c.role}</p>
-                </div>
-              </button>
+                </button>
+                <Link href={`/profile/${c.id}`} className="text-xs font-semibold text-orange-400 shrink-0 px-2">
+                  Profile
+                </Link>
+              </div>
             ))
           )}
         </div>

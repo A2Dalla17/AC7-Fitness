@@ -1,13 +1,18 @@
 import { Home, BookOpen, Users, Calendar, ShoppingBag } from 'lucide-react';
-import { COPY } from '@/lib/legacyBrand';
+import type { AppCopy } from '@/lib/i18n/types';
 
-export const MAIN_NAV = [
-  { href: '/home', label: COPY.nav.home, icon: Home },
-  { href: '/courses', label: COPY.nav.courses, icon: BookOpen },
-  { href: '/community', label: COPY.nav.community, icon: Users },
-  { href: '/calendar', label: COPY.nav.calendar, icon: Calendar },
-  { href: '/shop', label: COPY.nav.shop, icon: ShoppingBag },
+export const NAV_ITEMS = [
+  { href: '/home', icon: Home },
+  { href: '/courses', icon: BookOpen },
+  { href: '/community', icon: Users },
+  { href: '/calendar', icon: Calendar },
+  { href: '/shop', icon: ShoppingBag },
 ] as const;
+
+export function getMainNav(copy: AppCopy) {
+  const labels = [copy.nav.home, copy.nav.courses, copy.nav.community, copy.nav.calendar, copy.nav.shop];
+  return NAV_ITEMS.map((item, i) => ({ ...item, label: labels[i] }));
+}
 
 export const AUTH_ROUTES = ['/', '/login', '/register'];
 
@@ -19,7 +24,7 @@ export function isImmersiveRoute(pathname: string) {
   return (
     /^\/missions\/[^/]+\/train\/\d+/.test(pathname) ||
     /^\/community\/thread\//.test(pathname) ||
-    /^\/shop\/[^/]+$/.test(pathname)
+    /^\/shop\/[0-9a-f-]{36}$/i.test(pathname)
   );
 }
 

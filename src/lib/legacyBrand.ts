@@ -104,6 +104,14 @@ export const COPY = {
     achievementsEmpty: 'Complete missions to earn achievements',
     bookCoach: 'Book a coach (Calendar)',
     openMissions: 'Open missions',
+    statsRank: 'Current Rank',
+    statsXp: 'Total XP',
+    statsStreak: 'Current Streak',
+    statsMissions: 'Missions Done',
+    weeklyProgress: 'Weekly Progress',
+    monthlyProgress: 'Monthly Progress',
+    xpThisWeek: 'XP This Week',
+    momentum: 'Your Momentum',
   },
 
   courses: {
@@ -124,6 +132,10 @@ export const COPY = {
     guides: 'Training guides',
     guidesMeta: 'Exercise form & tips',
     resume: 'Resume mission',
+    statsStreak: 'Daily Streak',
+    statsWeeklyXp: 'Weekly XP',
+    statsTrainingTime: 'Training Time',
+    statsCompletion: 'Completion',
   },
 
   missions: {
@@ -154,6 +166,15 @@ export const COPY = {
     placeholder: 'Message the community…',
     emptyDm: 'No private chats yet. Search for a member or coach.',
     searchPlaceholder: 'Search members…',
+    trending: 'Trending Topics',
+    trendingTopics: ['#SeasonA1', '#Discipline', '#HallOfFame', '#PCT'],
+    onlineMembers: 'Online Now',
+    topContributors: 'Top Contributors',
+    activeNow: 'Active',
+    todaysChallenge: "Today's Challenge",
+    challengeTitle: 'Complete 50 reps today',
+    challengeMeta: 'Join the nation · earn bonus XP',
+    statsLine: (n: number) => `${n}+ members building their legacy`,
   },
 
   calendar: {
@@ -163,6 +184,12 @@ export const COPY = {
     pickCoachMeta: 'Select a coach to book a session',
     upcoming: 'Upcoming sessions',
     confirm: 'Confirm booking',
+    emptyTitle: 'Book Your First Session',
+    emptyMeta: 'Connect with a verified coach and start your private training journey.',
+    emptyCta: 'Find a Coach',
+    sessionStats: 'Session Statistics',
+    coachAvailability: 'Coach Availability',
+    monthlyOverview: 'Monthly Overview',
   },
 
   shop: {
@@ -171,6 +198,9 @@ export const COPY = {
     search: 'Search products…',
     featured: 'Featured',
     all: 'All products',
+    addToCart: 'Add to Cart',
+    wishlist: 'Wishlist',
+    sale: 'Sale',
   },
 
   profile: {

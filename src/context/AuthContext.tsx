@@ -19,6 +19,7 @@ interface AuthContextValue {
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   setRole: (role: Role) => Promise<void>;
+  refreshAppUser: (userId: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -31,6 +32,7 @@ function rowToAppUser(row: any): AppUser {
     email: row.email,
     role: row.role,
     goal: row.goal ?? undefined,
+    avatarUrl: row.avatar_url ?? undefined,
     createdAt: row.created_at,
   };
 }
@@ -156,6 +158,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signInWithEmail,
         signInWithGoogle,
         setRole,
+        refreshAppUser,
         signOut,
       }}
     >

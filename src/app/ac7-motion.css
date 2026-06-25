@@ -1,0 +1,461 @@
+/* ═══════════════════════════════════════════════════════════
+   AC7 MOTION — Moon & star universe (brand ambient)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── AC7 logo (official PNG — moon + star only) ─── */
+.ac7-logo-img {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+html[data-theme='dark'] .ac7-logo-img {
+  filter: brightness(0) invert(0.88);
+}
+
+.ac7-logo--muted {
+  opacity: 0.14;
+}
+
+html[data-theme='dark'] .ac7-logo--muted {
+  filter: brightness(0) invert(0.88);
+  opacity: 0.12;
+}
+
+/* SVG mark used for tiny ambient particles */
+.ac7-mark__moon {
+  fill: #1a2d4a;
+}
+
+.ac7-mark__star {
+  fill: #1a2d4a;
+}
+
+/* ─── Universe background — 3–5 tiny drifting moons & stars ─── */
+.ac7-universe {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ac7-universe__particle {
+  position: absolute;
+  opacity: 0.07;
+  animation: ac7-star-drift var(--ac7-dur, 42s) ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.ac7-universe__particle--moon {
+  animation:
+    ac7-moon-drift var(--ac7-dur, 42s) ease-in-out infinite alternate,
+    ac7-moon-rotate calc(var(--ac7-dur, 42s) * 1.3) ease-in-out infinite alternate;
+}
+
+.ac7-universe__particle--moon .ac7-mark__moon {
+  fill: rgba(170, 175, 182, 0.95);
+}
+
+.ac7-universe__particle--star .ac7-mark__star {
+  fill: rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme='light'] .ac7-universe__particle {
+  opacity: 0.06;
+}
+
+html[data-theme='light'] .ac7-universe__particle--moon .ac7-mark__moon,
+html[data-theme='light'] .ac7-universe__particle--star .ac7-mark__star {
+  fill: rgba(130, 136, 145, 0.9);
+}
+
+.ac7-universe__particle--twinkle {
+  animation:
+    ac7-star-drift var(--ac7-dur, 42s) ease-in-out infinite alternate,
+    ac7-star-twinkle 7s ease-in-out infinite;
+}
+
+@keyframes ac7-moon-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--ac7-dx, 14px), var(--ac7-dy, -12px), 0);
+  }
+}
+
+@keyframes ac7-moon-rotate {
+  from {
+    rotate: calc(var(--ac7-rot, 0deg) - 4deg);
+  }
+  to {
+    rotate: calc(var(--ac7-rot, 0deg) + 4deg);
+  }
+}
+
+@keyframes ac7-star-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--ac7-dx, 10px), var(--ac7-dy, -8px), 0);
+  }
+}
+
+@keyframes ac7-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.04;
+  }
+  50% {
+    opacity: 0.09;
+  }
+}
+
+html[data-theme='light'] .ac7-universe__particle--twinkle {
+  animation:
+    ac7-star-drift var(--ac7-dur, 42s) ease-in-out infinite alternate,
+    ac7-star-twinkle-light 7s ease-in-out infinite;
+}
+
+@keyframes ac7-star-twinkle-light {
+  0%,
+  100% {
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.12;
+  }
+}
+
+.ac7-auth-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.ac7-auth-shell > *:not(.ac7-universe) {
+  position: relative;
+  z-index: 1;
+}
+
+.ac7-brand-watermark {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  pointer-events: none;
+}
+
+/* ─── App shell ─── */
+.fit-app {
+  position: relative;
+  isolation: isolate;
+}
+
+.fit-app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.02), transparent 60%);
+}
+
+html[data-theme='light'] .fit-app::before {
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 0, 0, 0.015), transparent 60%);
+}
+
+.fit-app::after {
+  display: none;
+}
+
+.fit-app > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes elite-ambient-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(0, -1.5%, 0) scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes elite-accent-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+/* ─── Page enter: fade + blur (Apple-like, 200ms) ─── */
+.elite-page-enter {
+  animation: elite-page-enter 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes elite-page-enter {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* ─── Card hover: lift only ─── */
+.premium-card--interactive:hover,
+a.premium-card:hover,
+.premium-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ─── Progress ring + counter ─── */
+.journey-progress-ring__fill--animated {
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.journey-progress-ring__pct--live {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Mission / rank / achievement celebrations ─── */
+.elite-celebration {
+  animation: elite-celebration-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.elite-celebration__glow {
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25), 0 8px 40px rgba(249, 115, 22, 0.2);
+}
+
+.elite-celebration__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--elite-primary);
+  animation: elite-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.elite-celebration__xp {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--elite-primary);
+  animation: elite-xp-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@keyframes elite-celebration-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes elite-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes elite-xp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-complete-panel {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.mission-complete-panel.elite-celebration {
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: var(--elite-radius-card);
+  background: var(--color-surface);
+}
+
+/* Rank unlock */
+.rank-unlock {
+  position: relative;
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-unlock__out {
+  position: absolute;
+  animation: rank-fade-out 0.4s ease forwards;
+}
+
+.rank-unlock__in {
+  animation: rank-emerge 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+  color: var(--elite-primary);
+  text-shadow: 0 0 24px rgba(249, 115, 22, 0.45);
+}
+
+@keyframes rank-fade-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes rank-emerge {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hall of Fame podium — #1, #2, #3 rise in order */
+.hof-podium__slot--rise {
+  animation: hof-podium-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hof-podium__slot--1.hof-podium__slot--rise {
+  animation-delay: 0.08s;
+}
+
+.hof-podium__slot--2.hof-podium__slot--rise {
+  animation-delay: 0.22s;
+}
+
+.hof-podium__slot--3.hof-podium__slot--rise {
+  animation-delay: 0.36s;
+}
+
+@keyframes hof-podium-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Community messages */
+.fit-chat__bubble--enter {
+  animation: chat-bubble-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes chat-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Session confirmed */
+.elite-session-confirmed {
+  animation: elite-session-confirmed 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.elite-session-confirmed__icon {
+  animation: elite-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+@keyframes elite-session-confirmed {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Achievement unlock — subtle confetti dots */
+.achievement-unlock {
+  position: relative;
+  animation: elite-celebration-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.achievement-unlock::before,
+.achievement-unlock::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(249, 115, 22, 0.35) 0 2px, transparent 3px),
+    radial-gradient(circle at 75% 25%, rgba(249, 115, 22, 0.25) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 60% 70%, rgba(249, 115, 22, 0.2) 0 2px, transparent 3px);
+  animation: confetti-fade 1.2s ease-out forwards;
+}
+
+@keyframes confetti-fade {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac7-universe__particle,
+  .fit-app::before,
+  .fit-app::after,
+  .elite-page-enter,
+  .hof-podium__slot--rise,
+  .fit-chat__bubble--enter,
+  .elite-celebration,
+  .elite-session-confirmed,
+  .achievement-unlock::before,
+  .achievement-unlock::after,
+  .journey-progress-ring__fill--animated {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .premium-card--interactive:hover,
+  a.premium-card:hover,
+  .premium-card:hover {
+    transform: none;
+  }
+}

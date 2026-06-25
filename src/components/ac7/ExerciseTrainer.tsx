@@ -20,7 +20,8 @@ import { ExerciseDef } from '@/lib/exercises';
 import { bodyVisible, cameraFacingFor, computeMetric, RepCounter } from '@/lib/repCounter';
 import ExerciseDemoMedia from '@/components/ac7/ExerciseDemoMedia';
 import RepTickTracker from '@/components/ac7/RepTickTracker';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
+import { STAGE_COMPLETION_BONUS, XP_PER_REP } from '@/lib/seasonProgression';
 
 const TIME_LIMIT_SEC = 90;
 const MISTAKE_FLASH_MS = 1600;
@@ -37,7 +38,7 @@ function drawSkeleton(ctx: CanvasRenderingContext2D, kp: Keypoint[], exercise: E
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
-    ctx.strokeStyle = 'rgba(37, 99, 235, 0.85)';
+    ctx.strokeStyle = 'rgba(249, 115, 22, 0.85)';
     ctx.lineWidth = 3;
     ctx.stroke();
   };
@@ -54,7 +55,7 @@ function drawSkeleton(ctx: CanvasRenderingContext2D, kp: Keypoint[], exercise: E
     if ((p.score ?? 0) > 0.3) {
       ctx.beginPath();
       ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI);
-      ctx.fillStyle = '#60A5FA';
+      ctx.fillStyle = '#fb923c';
       ctx.fill();
     }
   });
@@ -71,6 +72,7 @@ export default function ExerciseTrainer({
   onComplete: (repsDone: number) => void;
   stageLabel?: string;
 }) {
+  const COPY = useCopy();
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -286,16 +288,22 @@ export default function ExerciseTrainer({
 
   if (phase === 'success') {
     const uniqueIssues = Array.from(new Set(minorIssues));
+    const xpEarned = reps * XP_PER_REP + STAGE_COMPLETION_BONUS;
     return (
       <div className="mission-train-shell flex flex-col items-center justify-center p-6 text-center">
         <RepTickTracker completed={reps} total={targetReps} />
-        <p className="mt-6 text-4xl">🎉</p>
-        <h3 className="mt-3 text-xl font-extrabold text-white">{COPY.train.stageComplete}</h3>
-        <p className="mt-2 text-sm text-muted">
-          {COPY.train.stageCompleteBody(reps, exercise.name, reps)}
-        </p>
+        <div className="mission-complete-panel elite-celebration elite-celebration__glow mt-6 w-full max-w-sm">
+          <div className="elite-celebration__check mx-auto">
+            <CheckCircle2 size={22} strokeWidth={2.5} />
+          </div>
+          <h3 className="mt-3 text-lg font-extrabold text-ink">✓ Mission Complete</h3>
+          <p className="mt-2 text-sm text-muted">
+            {COPY.train.stageCompleteBody(reps, exercise.name, reps)}
+          </p>
+          <p className="elite-celebration__xp mt-3 text-lg">+{xpEarned} XP</p>
+        </div>
         {uniqueIssues.length > 0 && (
-          <div className="mt-4 w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-left">
+          <div className="mt-4 w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 p-4 text-left">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Practice next time</p>
             <ul className="mt-2 space-y-1.5">
               {uniqueIssues.map((issue) => (
@@ -343,6 +351,18 @@ export default function ExerciseTrainer({
             <p className="mission-course-hero__meta">
               {stageLabel ?? 'Mission stage'} · {targetReps} reps · live camera count
             </p>
+            <div className="mission-meta-strip">
+              <span className="mission-meta-pill">
+                <Clock size={14} /> ~{Math.max(2, Math.ceil(targetReps / 5))} min
+              </span>
+              <span className="mission-meta-pill">
+                <Flame size={14} /> +{targetReps + 25} XP
+              </span>
+              <span className="mission-meta-pill">
+                ~{Math.round(targetReps * 0.4)} cal
+              </span>
+              <span className="mission-meta-pill">Intermediate</span>
+            </div>
           </div>
         </section>
 

@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import { ChevronRight, Play } from 'lucide-react';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 import type { ContinueTraining } from '@/hooks/useTrainingProgress';
 
 export default function ResumeCard({ training }: { training: ContinueTraining }) {
+  const COPY = useCopy();
+
   return (
     <Link href={training.href} className="fit-resume-card">
       <div className="fit-resume-card__icon">

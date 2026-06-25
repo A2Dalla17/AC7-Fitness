@@ -61,7 +61,7 @@ function ProductDetailContent() {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold">{product.name}</h2>
-            {product.verified && <ShieldCheck size={18} className="text-blue-400" />}
+            {product.verified && <ShieldCheck size={18} className="text-orange-400" />}
           </div>
           <p className="mt-1 text-sm text-muted">{product.description}</p>
           <p className="mt-3 text-2xl font-bold">${product.price.toFixed(2)}</p>
@@ -74,7 +74,7 @@ function ProductDetailContent() {
         >
           {status === 'placing' ? 'Placing order...' : 'Buy Now'}
         </button>
-        {status === 'placed' && <p className="text-sm text-blue-400">Order placed! Check your email for confirmation.</p>}
+        {status === 'placed' && <p className="text-sm text-orange-400">Order placed! Check your email for confirmation.</p>}
       </main>
       <BottomNav />
     </div>

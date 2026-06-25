@@ -33,7 +33,7 @@ export default function StageChecklist({
               {done ? (
                 <CheckCircle2 size={18} className="text-green-400" />
               ) : unlocked ? (
-                <Circle size={18} className={active ? 'text-blue-400' : 'text-muted'} />
+                <Circle size={18} className={active ? 'text-orange-400' : 'text-muted'} />
               ) : (
                 <Lock size={16} className="text-muted" />
               )}

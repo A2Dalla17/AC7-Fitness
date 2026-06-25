@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
-import { ChevronRight, Users } from 'lucide-react';
+import { Award, ChevronRight, Users } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 
 /** Guided journey section — experience layer; features unchanged underneath */
 export function JourneySection({
@@ -49,17 +51,39 @@ export function NextMilestoneRow({
 export function CommunityRow({
   href,
   announcement,
+  home,
 }: {
   href: string;
   announcement?: string | null;
+  /** Open home layout — no card row */
+  home?: boolean;
 }) {
+  const COPY = useCopy();
+  if (home) {
+    return (
+      <Link href={href} className="home-community">
+        <div className="home-community__icon-wrap">
+          <span className="home-community__pulse" aria-hidden />
+          <Users size={18} className="home-community__icon" />
+        </div>
+        <div className="home-community__body">
+          <p className="home-community__title">{COPY.home.communityCta}</p>
+          <p className="home-community__preview">
+            {announcement ?? COPY.home.communityMeta}
+          </p>
+        </div>
+        <ChevronRight size={16} className="home-community__chevron" />
+      </Link>
+    );
+  }
+
   return (
     <Link href={href} className="fit-journey-nation">
-      <Users size={20} className="shrink-0 text-blue-400" />
+      <Users size={20} className="shrink-0 text-orange-400" />
       <div className="min-w-0 flex-1">
         <p className="fit-journey-nation__title">{COPY.home.communityCta}</p>
         <p className="fit-journey-nation__meta">
-          {announcement ? `📢 ${announcement}` : COPY.home.communityMeta}
+          {announcement ? announcement : COPY.home.communityMeta}
         </p>
       </div>
       <ChevronRight size={18} className="shrink-0 text-muted" />
@@ -70,10 +94,45 @@ export function CommunityRow({
 export function AchievementRow({
   href,
   badges,
+  home,
 }: {
   href: string;
   badges: { id: string; label: string }[];
+  home?: boolean;
 }) {
+  const COPY = useCopy();
+  if (home) {
+    return (
+      <div className="home-achievements">
+        <div className="home-achievements__head">
+          <Award size={16} className="home-achievements__icon" />
+          <span className="home-achievements__count">
+            {badges.length === 0 ? 'No badges yet' : `${badges.length} earned`}
+          </span>
+        </div>
+        {badges.length === 0 ? (
+          <p className="home-achievements__empty">{COPY.home.achievementsEmpty}</p>
+        ) : (
+          <ul className="home-achievements__list">
+            {badges.slice(0, 4).map((b) => (
+              <li key={b.id} className="home-achievement-pill">
+                {b.label}
+              </li>
+            ))}
+            {badges.length > 4 && (
+              <li className="home-achievement-pill home-achievement-pill--more">
+                +{badges.length - 4}
+              </li>
+            )}
+          </ul>
+        )}
+        <Link href={href} className="home-achievements__link">
+          View profile <ChevronRight size={14} />
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <Link href={href} className="fit-journey-achieve">
       <div className="min-w-0 flex-1">

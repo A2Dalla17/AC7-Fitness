@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Crown, Trophy } from 'lucide-react';
+import Ac7BrandWatermark from '@/components/ac7/Ac7BrandWatermark';
 
 export function HallOfFameMedal({ rank }: { rank: number }) {
   if (rank === 1) {
@@ -78,7 +79,7 @@ export function HallOfFameEntry({
 export function HallOfFameEmpty({ message }: { message: string }) {
   return (
     <div className="hof-empty">
-      <Trophy size={28} className="hof-empty__icon" />
+      <Ac7BrandWatermark />
       <p>{message}</p>
     </div>
   );

@@ -13,7 +13,7 @@ export default function AuthCard({
   children: ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-bg px-6 py-12">
+    <main className="relative flex min-h-screen flex-col items-center justify-center bg-transparent px-6 py-12">
       <div className="mb-8 text-center">
         <div className="mx-auto mb-5">
           <AC7Logo size={64} />

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import Header from '@/components/Header';
+import PremiumCard from '@/components/premium/PremiumCard';
 import { Booking, bookingFromRow, Coach, coachFromRow } from '@/types';
 
 function ConfirmedContent() {
@@ -25,8 +25,6 @@ function ConfirmedContent() {
         .maybeSingle();
       if (!bookingRow) return;
 
-      // No real payment processor yet — this is the placeholder "paid" step
-      // in the flow until Stripe/escrow is wired up.
       await supabase.from('bookings').update({ payment_status: 'paid' }).eq('id', bookingId);
       const updated = { ...bookingRow, payment_status: 'paid' };
       setBooking(bookingFromRow(updated as any));
@@ -41,28 +39,32 @@ function ConfirmedContent() {
   }, [bookingId]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg">
-      <Header title="Booking Confirmed" />
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 text-center">
-        <CheckCircle2 size={56} className="text-chat" />
-        <h2 className="mt-4 text-xl font-bold">Payment confirmed</h2>
-        <p className="mt-1 text-sm text-muted">Your session is booked and paid for.</p>
+    <div className="fit-page flex min-h-[60vh] flex-col items-center justify-center py-10 text-center">
+      <PremiumCard className="elite-session-confirmed w-full max-w-md p-8">
+        <div className="elite-session-confirmed__icon mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-orange-500/15 text-orange-500">
+          <CheckCircle2 size={32} />
+        </div>
+        <h2 className="mt-5 text-xl font-bold text-ink">✓ Session Confirmed</h2>
+        <p className="mt-2 text-sm text-muted">Your session is booked and paid for.</p>
 
         {booking && (
-          <div className="mt-6 w-full max-w-sm rounded-xl2 border border-navy-deep bg-navy/20 p-4 text-left">
-            <p className="font-semibold">{coach?.name ?? 'Coach'}</p>
-            <p className="mt-1 text-sm text-muted">{booking.date} · {booking.time}</p>
-            <p className="mt-2 text-lg font-bold">${coach?.price ?? '—'}</p>
+          <div className="mt-6 rounded-xl border border-[var(--elite-card-border)] bg-[var(--color-surface-elevated)] p-4 text-left">
+            <p className="font-semibold text-ink">{coach?.name ?? 'Coach'}</p>
+            <p className="mt-1 text-sm text-muted">
+              {booking.date} · {booking.time}
+            </p>
+            <p className="mt-2 text-lg font-bold text-ink">${coach?.price ?? '—'}</p>
           </div>
         )}
 
         <button
+          type="button"
           onClick={() => router.push('/home')}
-          className="mt-8 w-full max-w-sm rounded-xl2 bg-navy px-6 py-3 font-semibold"
+          className="mt-8 w-full rounded-xl bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-400"
         >
           Back to Dashboard
         </button>
-      </main>
+      </PremiumCard>
     </div>
   );
 }

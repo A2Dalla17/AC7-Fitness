@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
 import './ac7-elite.css';
+import './ac7-premium.css';
+import './ac7-motion.css';
 import AppProviders from '@/components/AppProviders';
 
 const inter = Inter({

@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Role } from '@/types';
+import Ac7BrandWatermark from '@/components/ac7/Ac7BrandWatermark';
 
 export default function ProtectedRoute({
   children,
@@ -32,8 +33,9 @@ export default function ProtectedRoute({
 
   if (loading || !supabaseUser || !appUser?.role) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg text-ink">
-        <p className="text-sm text-muted">Loading AC7 Fitness...</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-bg text-ink">
+        <Ac7BrandWatermark size={40} />
+        <p className="text-sm text-muted">Loading…</p>
       </div>
     );
   }

@@ -33,6 +33,7 @@ export interface AppUser {
   email: string;
   role: Role;
   goal?: Goal;
+  avatarUrl?: string;
   createdAt: number;
 }
 
@@ -249,6 +250,7 @@ export interface Product {
   imageUrl?: string;
   verified: boolean;
   stock: number;
+  sellerId?: string;
 }
 
 export interface ProductRow {
@@ -260,6 +262,7 @@ export interface ProductRow {
   image_url: string | null;
   verified: boolean;
   stock: number;
+  seller_id?: string | null;
 }
 
 export function productFromRow(row: ProductRow): Product {
@@ -272,6 +275,7 @@ export function productFromRow(row: ProductRow): Product {
     imageUrl: row.image_url ?? undefined,
     verified: row.verified,
     stock: row.stock,
+    sellerId: row.seller_id ?? undefined,
   };
 }
 

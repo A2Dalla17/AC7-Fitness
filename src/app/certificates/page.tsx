@@ -6,8 +6,9 @@ import { Award, Download, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 import WorldPageHeader from '@/components/world/WorldPageHeader';
+import Ac7BrandWatermark from '@/components/ac7/Ac7BrandWatermark';
 
 interface Cert {
   id: string;
@@ -17,6 +18,7 @@ interface Cert {
 }
 
 function CertificateModal({ cert, name, onClose }: { cert: Cert; name: string; onClose: () => void }) {
+  const COPY = useCopy();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 print:bg-white print:p-0">
       <div className="w-full max-w-xl">
@@ -30,7 +32,7 @@ function CertificateModal({ cert, name, onClose }: { cert: Cert; name: string; o
         </div>
         <div
           id="cert-print"
-          className="rounded-3xl border-4 border-navy bg-gradient-to-br from-[#0b1730] to-[#0e1a30] p-10 text-center text-white print:rounded-none print:border-navy"
+          className="rounded-3xl border-4 border-orange-500 bg-gradient-to-br from-[#111111] to-[#000000] p-10 text-center text-white print:rounded-none print:border-orange-500"
         >
           <Award size={48} className="mx-auto text-navy" />
           <p className="mt-4 text-xs uppercase tracking-[0.3em] text-navy">AC7 Elite</p>
@@ -50,6 +52,7 @@ function CertificateModal({ cert, name, onClose }: { cert: Cert; name: string; o
 }
 
 function CertificatesContent() {
+  const COPY = useCopy();
   const { appUser, supabaseUser } = useAuth();
   const [certs, setCerts] = useState<Cert[]>([]);
   const [open, setOpen] = useState<Cert | null>(null);
@@ -76,7 +79,7 @@ function CertificatesContent() {
 
       {certs.length === 0 ? (
         <div className="text-center py-8">
-          <Award size={32} className="mx-auto text-muted" />
+          <Ac7BrandWatermark />
           <p className="mt-3 font-semibold">{COPY.certificates.empty}</p>
           <p className="text-sm text-muted mt-1">{COPY.certificates.emptyHint}</p>
           <Link href="/missions" className="fit-btn fit-btn--primary mt-4 inline-flex">
@@ -92,7 +95,7 @@ function CertificatesContent() {
               onClick={() => setOpen(c)}
               className="fit-cert-row w-full text-left"
             >
-              <Award size={20} className="text-blue-400 shrink-0" />
+              <Award size={20} className="text-orange-400 shrink-0" />
               <span className="flex-1 font-semibold">{c.title}</span>
               <span className="text-sm text-muted">{new Date(c.issued_at).toLocaleDateString()}</span>
             </button>

@@ -2,14 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MAIN_NAV } from '@/components/layout/navConfig';
+import { useCopy } from '@/context/LanguageContext';
+import { getMainNav } from '@/components/layout/navConfig';
 
 export default function BottomNav() {
   const pathname = usePathname() ?? '';
+  const copy = useCopy();
+  const mainNav = getMainNav(copy);
 
   return (
     <nav className="fit-bottom-nav lg:hidden" aria-label="Main">
-      {MAIN_NAV.map(({ href, label, icon: Icon }) => {
+      {mainNav.map(({ href, label, icon: Icon }) => {
         const active = href === '/home' ? pathname === '/home' || pathname === '/dashboard' : pathname.startsWith(href);
         return (
           <Link key={href} href={href} className={`fit-bottom-nav__item ${active ? 'fit-bottom-nav__item--active' : ''}`}>

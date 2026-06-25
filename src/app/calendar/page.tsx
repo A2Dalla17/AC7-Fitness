@@ -4,17 +4,20 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { format, addDays, startOfToday } from 'date-fns';
-import { Search } from 'lucide-react';
+import { Calendar, Clock, Search } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Booking, bookingFromRow } from '@/types';
-import { COPY } from '@/lib/legacyBrand';
+import { useCopy } from '@/context/LanguageContext';
 import WorldPageHeader from '@/components/world/WorldPageHeader';
+import PremiumCard from '@/components/premium/PremiumCard';
+import Ac7BrandWatermark from '@/components/ac7/Ac7BrandWatermark';
 
 const TIME_SLOTS = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00'];
 
 function CalendarContent() {
+  const COPY = useCopy();
   const { supabaseUser, appUser } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
@@ -67,18 +70,40 @@ function CalendarContent() {
     if (data) router.push(`/calendar/confirmed?bookingId=${data.id}`);
   };
 
+  const upcoming = bookings.filter((b) => b.status !== 'cancelled').length;
+  const confirmed = bookings.filter((b) => b.status === 'confirmed').length;
+
   return (
     <div className="fit-page">
       <WorldPageHeader title={COPY.calendar.title} subline={COPY.calendar.subline} />
+
+      <div className="calendar-widget-grid">
+        <PremiumCard className="calendar-widget">
+          <p className="calendar-widget__label">{COPY.calendar.upcoming}</p>
+          <p className="calendar-widget__value">{upcoming}</p>
+        </PremiumCard>
+        <PremiumCard className="calendar-widget">
+          <p className="calendar-widget__label">{COPY.calendar.sessionStats}</p>
+          <p className="calendar-widget__value">{confirmed}</p>
+        </PremiumCard>
+        <PremiumCard className="calendar-widget">
+          <p className="calendar-widget__label">{COPY.calendar.coachAvailability}</p>
+          <p className="calendar-widget__value">{TIME_SLOTS.length} slots</p>
+        </PremiumCard>
+        <PremiumCard className="calendar-widget">
+          <p className="calendar-widget__label">{COPY.calendar.monthlyOverview}</p>
+          <p className="calendar-widget__value">{format(today, 'MMM yyyy')}</p>
+        </PremiumCard>
+      </div>
 
       {coachId ? (
         <p className="text-sm text-muted">
           Book with <span className="font-semibold text-ink">{coachName ?? 'Coach'}</span>
         </p>
       ) : (
-        <Link href="/coach" className="fit-hub-row">
+        <Link href="/coach" className="fit-hub-row premium-card premium-card--interactive">
           <span className="fit-hub-row__icon">
-            <Search size={20} className="text-blue-400" />
+            <Search size={20} className="text-orange-400" />
           </span>
           <div className="fit-hub-row__body">
             <p className="fit-hub-row__title">{COPY.calendar.pickCoach}</p>
@@ -87,7 +112,10 @@ function CalendarContent() {
         </Link>
       )}
 
-      <section>
+      <PremiumCard>
+        <p className="fit-section-title flex items-center gap-2">
+          <Calendar size={16} className="text-orange-400" /> Select date
+        </p>
         <div className="fit-date-strip">
           {days.map((d) => {
             const active = format(d, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd');
@@ -104,11 +132,13 @@ function CalendarContent() {
             );
           })}
         </div>
-      </section>
+      </PremiumCard>
 
       {coachId && (
-        <section>
-          <p className="fit-section-title">Available · {format(selectedDate, 'MMM d')}</p>
+        <PremiumCard>
+          <p className="fit-section-title flex items-center gap-2">
+            <Clock size={16} className="text-orange-400" /> Available · {format(selectedDate, 'MMM d')}
+          </p>
           <div className="fit-time-grid">
             {TIME_SLOTS.map((t) => (
               <button
@@ -129,21 +159,28 @@ function CalendarContent() {
           >
             {status === 'booking' ? 'Booking…' : COPY.calendar.confirm}
           </button>
-        </section>
+        </PremiumCard>
       )}
 
       <section>
         <p className="fit-section-title">{COPY.calendar.upcoming}</p>
         {bookings.length === 0 ? (
-          <p className="text-sm text-muted">No sessions scheduled.</p>
+          <PremiumCard className="calendar-empty">
+            <Ac7BrandWatermark />
+            <p className="calendar-empty__title">{COPY.calendar.emptyTitle}</p>
+            <p className="calendar-empty__meta">{COPY.calendar.emptyMeta}</p>
+            <Link href="/coach" className="fit-btn fit-btn--primary">
+              {COPY.calendar.emptyCta}
+            </Link>
+          </PremiumCard>
         ) : (
           bookings.map((b) => (
-            <div key={b.id} className="fit-booking-row">
+            <PremiumCard key={b.id} className="fit-booking-row mb-2">
               <span>
                 {b.date} · {b.time}
               </span>
               <span className="capitalize text-muted">{b.status}</span>
-            </div>
+            </PremiumCard>
           ))
         )}
       </section>
