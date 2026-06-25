@@ -1,0 +1,25 @@
+# AC7 Elite Fitness — Cursor AI project rules & context
+
+You are working on **AC7 Elite Fitness**, a premium fitness platform.
+Read `HANDOFF.md` in this folder for the full architecture, what's done, and what's pending.
+
+## Stack
+- Next.js 14 (App Router) + TypeScript
+- Tailwind CSS + a custom design system in `src/app/globals.css`
+- Supabase (Auth, Postgres, Realtime, Storage) — project ref `ceokjxnmvmptuqdclora`
+- TensorFlow.js MoveNet for camera rep-counting
+
+## Run
+- `npm run dev` (port 3001). If you see ChunkLoadError, run `npm run dev:clean`.
+- Do NOT run `npm run build` while `npm run dev` is running — it overwrites `.next` and breaks the dev server.
+
+## Design system (use these, do not invent new patterns)
+- Theme: dark + light, toggled via `ThemeContext` (`data-theme` on <html>). Backgrounds are gym photos (`/gym-bg.png`, `/gym-bg-light.png`).
+- Cards: class `ac7-card` (elevated glassmorphism). Buttons: `ac7-btn` / `ac7-btn-outline` (compact, never full-width unless intended).
+- Grid: `ac7-grid` (1→2→4 cols). Typography: `h-xl`, `h-l`, `h-m`, `body-text`, `caption`.
+- Tokens (tailwind.config.js): `bg`, `surface` (#0F172A), `navy`=accent blue #3B82F6, `ink`, `muted`. Never make cards the same color as the background.
+- Global nav = `AppHeader` (top, sticky). Bottom nav is removed (BottomNav is a no-op).
+
+## Rules
+- Mobile-first, responsive, 8px spacing, consistent card sizes, no stretched/edge-to-edge content (`#app-content main` is max-width centered).
+- Keep lime out — the palette is blue + white + the gym background.
